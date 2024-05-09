@@ -41,3 +41,5 @@ yarn-error.log*
 # apps/*/bulid and apps/*/dist
 apps/*/build
 apps/*/dist
+
+.gitignore

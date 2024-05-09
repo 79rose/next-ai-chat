@@ -1,5 +1,5 @@
 {
-  "name": "with-vue-nuxt",
+  "name": "turbo-chat-ai",
   "private": true,
   "scripts": {
     "build": "turbo run build",
