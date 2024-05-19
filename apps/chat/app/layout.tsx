@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
 import { Figtree } from 'next/font/google';
-
-import ModalProvider from '@/providers/ModalProvider';
-import ToasterProvider from '@/providers/ToasterProvider';
 import './globals.css';
-
 const font = Figtree({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -12,7 +8,6 @@ export const metadata: Metadata = {
   description: '调用大模型来实现ai对话应用',
 };
 
-export const revalidate = 0;
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -21,8 +16,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={font.className}>
-        {/* 新增 */}
-        <script
+        {/* <script
           async
           dangerouslySetInnerHTML={{
             __html: `
@@ -31,9 +25,9 @@ export default async function RootLayout({
               document.documentElement.classList.toggle('light', item === 'light');
             `,
           }}
-        />
-        <ToasterProvider />
-        <ModalProvider />
+        /> */}
+        {/* <ToasterProvider />
+          <ModalProvider /> */}
         {children}
       </body>
     </html>

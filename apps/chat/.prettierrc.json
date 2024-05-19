@@ -7,7 +7,5 @@
         "classNames"
     ],
     "singleQuote": true,
-    "trailingComma": "es5",
-    "tailwindcss.wrapAttributes": true,
-    "printWidth": 60
+    "trailingComma": "es5"
 }

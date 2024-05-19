@@ -8,6 +8,7 @@ node_modules
 # testing
 coverage
 
+apps/chat/.next
 # build outputs
 .output/
 out/
@@ -34,9 +35,6 @@ yarn-error.log*
 
 # vercel
 .vercel
-
-#vsc
-.vscode
 
 # apps/*/bulid and apps/*/dist
 apps/*/build

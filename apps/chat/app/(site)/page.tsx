@@ -1,11 +1,53 @@
-export const revalidate = 0;
-import Button from './components/button';
+'use client';
+import { Segmented, theme } from 'antd';
+import { ThemeAppearance, ThemeProvider } from 'antd-style';
+import { getAntdTheme } from 'dumi-theme-antd-style/dist/styles/antdTheme';
+import { useState } from 'react';
+import App from './components/button';
+type CustomAppearance = ThemeAppearance | 'grey';
 
-export default async function Home() {
+export default function RootLayout() {
+  const [appearance, setAppearance] = useState<CustomAppearance>('light');
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Button />
-      <h1 className="text-primarys">chat</h1>
-    </div>
+    <ThemeProvider
+      appearance={appearance}
+      theme={(appearance: CustomAppearance) => {
+        switch (appearance) {
+          case 'light':
+            return {
+              token: {
+                colorPrimary: 'purple',
+              },
+            };
+          case 'dark':
+            return {
+              token: {
+                colorPrimary: 'cyan',
+              },
+              algorithm: theme.darkAlgorithm,
+            };
+
+          case 'grey':
+            return {
+              algorithm: getAntdTheme('dark')?.algorithm,
+            };
+        }
+      }}
+    >
+      <App
+        extra={
+          <Segmented
+            options={[
+              { label: '亮色', value: 'light' },
+              { label: '暗色', value: 'dark' },
+              { label: '灰色', value: 'grey' },
+            ]}
+            value={appearance}
+            onChange={(e) => setAppearance(e as CustomAppearance)}
+          />
+        }
+      />
+    </ThemeProvider>
   );
 }
