@@ -5,8 +5,10 @@ import { HttpExceptionFilter } from './common/filters/http-exception/http-except
 import { WrapResponseInterceptor } from './common/interceptors/wrap-response/wrap-response.interceptor';
 import { TimeoutInterceptor } from './common/interceptors/timeout/timeout.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+// import { WsAdapter } from '@nestjs/platform-ws';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // app.useWebSocketAdapter(new WsAdapter(app));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -23,8 +25,8 @@ async function bootstrap() {
     new TimeoutInterceptor(),
   );
   const options = new DocumentBuilder()
-    .setTitle('I Love Coffee')
-    .setDescription('The I Love Coffee API description')
+    .setTitle('hello ai')
+    .setDescription('The AI Chat API description')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, options);

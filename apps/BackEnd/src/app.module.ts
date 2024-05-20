@@ -5,6 +5,7 @@ import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { CommonModule } from './common/common.module';
+import { ChatModule } from './chat/chat.module';
 import AppConfig from './config/app.config';
 @Module({
   imports: [
@@ -15,15 +16,16 @@ import AppConfig from './config/app.config';
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'postgres',
-        host: process.env.DATABASE_HOST, //process.env.DATABASE_HOST
-        port: +process.env.DATABASE_PORT, //process.env.DATABASE_PORT
-        username: process.env.DATABASE_USER, //process.env.DATABASE_USER
-        password: process.env.DATABASE_PASSWORD, //process.env.DATABASE_PASSWORD
+        host: 'localhost',
+        port: 5432,
+        username: 'postgres', //'postgres
+        password: '123456aa',
         autoLoadEntities: true, //自动加载实体
         synchronize: true, //自动同步数据库
       }),
     }),
     CommonModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
