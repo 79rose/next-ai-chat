@@ -1,13 +1,12 @@
 'use client';
-import { Segmented, theme } from 'antd';
+import ChatSlider from '@/components/chatSlider';
+import useTheme from '@/hooks/useTheme';
+import { MoonFilled, SunFilled } from '@ant-design/icons';
+import { Layout, Segmented, theme } from 'antd';
 import { ThemeAppearance, ThemeProvider } from 'antd-style';
-import { getAntdTheme } from 'dumi-theme-antd-style/dist/styles/antdTheme';
-import { useState } from 'react';
-import App from './components/button';
-type CustomAppearance = ThemeAppearance | 'grey';
-
+type CustomAppearance = ThemeAppearance;
 export default function RootLayout() {
-  const [appearance, setAppearance] = useState<CustomAppearance>('light');
+  const { theme: appearance, toggleTheme } = useTheme();
 
   return (
     <ThemeProvider
@@ -27,27 +26,22 @@ export default function RootLayout() {
               },
               algorithm: theme.darkAlgorithm,
             };
-
-          case 'grey':
-            return {
-              algorithm: getAntdTheme('dark')?.algorithm,
-            };
         }
       }}
     >
-      <App
-        extra={
+      <Layout className="flex h-[100vh] flex-row">
+        <ChatSlider />
+        {
           <Segmented
             options={[
-              { label: '亮色', value: 'light' },
-              { label: '暗色', value: 'dark' },
-              { label: '灰色', value: 'grey' },
+              { value: 'light', icon: <SunFilled /> },
+              { value: 'dark', icon: <MoonFilled /> },
             ]}
             value={appearance}
-            onChange={(e) => setAppearance(e as CustomAppearance)}
+            onChange={toggleTheme}
           />
         }
-      />
+      </Layout>
     </ThemeProvider>
   );
 }
