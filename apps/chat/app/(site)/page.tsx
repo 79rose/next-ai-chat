@@ -1,9 +1,9 @@
 'use client';
 import ChatSlider from '@/components/chatSlider';
 import useTheme from '@/hooks/useTheme';
-import { MoonFilled, SunFilled } from '@ant-design/icons';
-import { Layout, Segmented, theme } from 'antd';
+import { Layout, theme } from 'antd';
 import { ThemeAppearance, ThemeProvider } from 'antd-style';
+import MianChat from './components/mianChat';
 type CustomAppearance = ThemeAppearance;
 export default function RootLayout() {
   const { theme: appearance, toggleTheme } = useTheme();
@@ -29,18 +29,9 @@ export default function RootLayout() {
         }
       }}
     >
-      <Layout className="flex h-[100vh] flex-row">
+      <Layout className="flex h-[100vh] w-full flex-row">
         <ChatSlider />
-        {
-          <Segmented
-            options={[
-              { value: 'light', icon: <SunFilled /> },
-              { value: 'dark', icon: <MoonFilled /> },
-            ]}
-            value={appearance}
-            onChange={toggleTheme}
-          />
-        }
+        <MianChat className="flex-1" />
       </Layout>
     </ThemeProvider>
   );

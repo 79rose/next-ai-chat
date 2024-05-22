@@ -26,3 +26,12 @@ body {
   /* background-color: rgb(var(--color-background)); */
   /* color: rgb(var(--color-foreground)); */
 }
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.group:hover .group-\[hover\]\:visible {
+  display: block;
+}

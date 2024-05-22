@@ -7,7 +7,7 @@ const useTheme = () => {
       return 'light';
     }
     const classList = document.documentElement.classList;
-    return classList.contains('dark') ? 'dark' : 'light';
+    return classList.contains('light') ? 'light' : 'light';
   };
 
   const [theme, setTheme] = useState<CustomAppearance>(init());
@@ -32,14 +32,14 @@ const useTheme = () => {
   //根据主题设置class
   useEffect(() => {
     const classList = document.documentElement.classList;
-    classList.toggle('dark', theme === 'dark');
+    classList.toggle('light', theme === 'light');
     classList.toggle('light', theme === 'light');
   }, [theme]);
   //跟随系统主题
   useEffect(() => {
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const media = window.matchMedia('(prefers-color-scheme: light)');
     const listener = (event: MediaQueryListEvent) => {
-      const theme = event.matches ? 'dark' : 'light';
+      const theme = event.matches ? 'light' : 'light';
       setTheme(theme);
       localStorage.setItem('theme', theme);
     };
@@ -49,7 +49,7 @@ const useTheme = () => {
     };
   }, []);
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newTheme = theme === 'light' ? 'light' : 'light';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme); // 持久化缓存
   };
