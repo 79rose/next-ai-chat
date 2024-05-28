@@ -3,6 +3,7 @@ import { Flex, Popover } from 'antd';
 import { useState } from 'react';
 import NewChat from './newChat';
 import OldChat from './oldChat';
+import User from './userslider';
 export default function ChatSlider() {
   const [collapsed, setCollapsed] = useState(false);
   const closeContent = <div className="font-semibold">关闭</div>;
@@ -12,7 +13,7 @@ export default function ChatSlider() {
   return (
     <Flex
       vertical
-      className="hide-scrollbar box-border w-[260px] overflow-auto bg-white px-4 py-2 shadow-md"
+      className="hide-scrollbar relative box-border h-full w-[260px] overflow-auto bg-white px-4 py-2 shadow-md"
     >
       <div className="mb-2 flex  items-center justify-between">
         <Popover content={closeContent} trigger="hover">
@@ -34,6 +35,13 @@ export default function ChatSlider() {
         {chatList.map((Chat, index) => (
           <Chat key={index} />
         ))}
+      </div>
+      <div
+        className="
+      fixed bottom-2 w-[230px]
+      "
+      >
+        <User></User>
       </div>
     </Flex>
   );

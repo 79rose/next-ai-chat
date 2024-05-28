@@ -2,10 +2,10 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { IoMdClose } from 'react-icons/io';
 
 interface ModalProps {
-  title: string;
+  title?: string;
   isOpen: boolean;
   onChange: (isOpen: boolean) => void;
-  description: string;
+  description?: string;
   children: React.ReactNode;
 }
 
@@ -40,7 +40,7 @@ const Modal: React.FC<ModalProps> = ({
             rounded-md 
             border 
             border-neutral-700 
-            bg-neutral-800 
+            bg-white  
             p-[25px] 
             drop-shadow-md 
             focus:outline-none 
@@ -85,7 +85,7 @@ const Modal: React.FC<ModalProps> = ({
                 justify-center 
                 rounded-full 
                 text-neutral-400 
-                hover:text-white 
+                hover:text-black 
                 focus:outline-none
               "
               aria-label="Close"

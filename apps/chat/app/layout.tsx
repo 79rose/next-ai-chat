@@ -1,3 +1,5 @@
+import ModalProvider from '@/providers/ModalProvider';
+import ToasterProvider from '@/providers/ToasterProvider';
 import type { Metadata } from 'next';
 import { Figtree } from 'next/font/google';
 import './globals.css';
@@ -20,14 +22,16 @@ export default async function RootLayout({
           async
           dangerouslySetInnerHTML={{
             __html: `
-              const item = localStorage.getItem('theme') || 'light';
-              document.documentElement.classList.toggle('dark', item === 'dark');
-              document.documentElement.classList.toggle('light', item === 'light');
+            const item = localStorage.getItem('theme') || 'light';
+            document.documentElement.classList.toggle('dark', item === 'dark');
+            document.documentElement.classList.toggle('light', item === 'light');
             `,
           }}
         /> */}
         {/* <ToasterProvider />
           <ModalProvider /> */}
+        <ToasterProvider />
+        <ModalProvider />
         {children}
       </body>
     </html>
