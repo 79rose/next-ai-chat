@@ -1,8 +1,14 @@
+import useActiveChatStore from '@/hooks/useActiveChat';
 import { DeleteOutlined, EditOutlined, MoreOutlined } from '@ant-design/icons';
 import { Dropdown, Input, MenuProps } from 'antd';
 import { useState } from 'react';
-export default function OldChat() {
-  const [renameValue, setRenameValue] = useState('这是一个prompt');
+interface ChatInfo {
+  title: string;
+  id: string;
+}
+export default function OldChat({ chatInfo }: { chatInfo: ChatInfo }) {
+  const { activeChat, setActiveChat } = useActiveChatStore();
+  const [renameValue, setRenameValue] = useState(chatInfo.title ?? '');
   const [isRename, setIsRename] = useState(false);
   const items: MenuProps['items'] = [
     {
@@ -43,13 +49,22 @@ export default function OldChat() {
     setIsRename(false);
   };
   return (
-    <div className="group flex cursor-pointer items-center rounded-lg p-2 hover:bg-gray-200 ">
+    <div
+      className={`group flex cursor-pointer items-center rounded-lg p-2 hover:bg-gray-100 ${
+        activeChat === chatInfo.id ? 'bg-gray-100' : ''
+      }`}
+      onClick={() => setActiveChat(chatInfo.id)}
+    >
       {!isRename && (
         <>
           <div className="font-500 mr-auto overflow-hidden text-clip text-[16px] ">
             {renameValue}
           </div>
-          <div className=" hidden hover:backdrop-blur group-[hover]:visible">
+          <div
+            className={`${
+              activeChat === chatInfo.id ? '' : 'hidden'
+            }  hover:backdrop-blur group-[hover]:visible `}
+          >
             <Dropdown menu={{ items }} trigger={['click']}>
               <MoreOutlined
                 rotate={90}

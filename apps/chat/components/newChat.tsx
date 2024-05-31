@@ -10,12 +10,23 @@ export default function NewChat({ className }: { className?: string }) {
       className={`group flex cursor-pointer items-center rounded-md p-2 hover:bg-gray-200 ${className}`}
     >
       <div>
-        <OpenAIOutlined />
+        <OpenAIOutlined
+          style={{
+            fontSize: '20px',
+            color: 'black',
+          }}
+        />
       </div>
-      <div className="font-500  mx-auto ml-2">新聊天</div>
+      <div className=" mx-auto ml-2 scale-110 font-semibold">新聊天</div>
       <div className="group-[hover]:visible" onClick={newChat}>
         <Popover content={newContent} trigger="hover" placement="right">
-          <FormOutlined className="h-[20px] w-[20px] hover:scale-125 hover:text-black" />
+          <FormOutlined
+            className="h-[20px] w-[20px] hover:scale-125 hover:text-black"
+            style={{
+              fontSize: '20px',
+              color: 'purple',
+            }}
+          />
         </Popover>
       </div>
     </div>

@@ -35,3 +35,8 @@ body {
 .group:hover .group-\[hover\]\:visible {
   display: block;
 }
+
+/* 滚动条全部默消失 */
+::-webkit-scrollbar {
+  display: none;
+}

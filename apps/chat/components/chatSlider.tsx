@@ -8,7 +8,33 @@ export default function ChatSlider() {
   const [collapsed, setCollapsed] = useState(false);
   const closeContent = <div className="font-semibold">关闭</div>;
   const newContent = <div className="font-semibold">选择源</div>;
-  const chatList = Array.from({ length: 10 }, (_, i) => OldChat);
+
+  const chatList = [
+    {
+      title: '说一下gpt-3',
+      id: '1',
+    },
+    {
+      title: '说一下gpt-4',
+      id: '2',
+    },
+    {
+      title: '说一下gpt-5',
+      id: '3',
+    },
+    {
+      title: '说一下gpt-6',
+      id: '4',
+    },
+    {
+      title: '说一下gpt-7',
+      id: '5',
+    },
+    {
+      title: '说一下gpt-8',
+      id: '6',
+    },
+  ].map((chatInfo) => <OldChat key={chatInfo.id} chatInfo={chatInfo} />);
 
   return (
     <Flex
@@ -32,9 +58,7 @@ export default function ChatSlider() {
         <div className="mb-2 ml-2 text-[12px] font-[500] text-[#3336]">
           今天
         </div>
-        {chatList.map((Chat, index) => (
-          <Chat key={index} />
-        ))}
+        {chatList}
       </div>
       <div
         className="

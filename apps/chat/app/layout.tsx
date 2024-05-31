@@ -17,6 +17,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" type="image/png" href="./favicon.png" />
+      </head>
       <body className={font.className}>
         {/* <script
           async

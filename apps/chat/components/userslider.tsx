@@ -41,8 +41,8 @@ export default function User() {
   return (
     <>
       <div
-        className="flex w-[full] cursor-pointer gap-2 rounded-md bg-gray-100
-       px-2 py-2 text-[18px] hover:bg-gray-200"
+        className="flex w-[full] cursor-pointer gap-2 rounded-md bg-gray-100/80
+       px-2 py-2 text-[18px] hover:bg-gray-200/80 "
       >
         {isLogin ? (
           <>
