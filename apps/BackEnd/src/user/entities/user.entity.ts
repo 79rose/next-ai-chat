@@ -1,4 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ModelConfig } from 'src/model/entities/model-config.entity';
+import { Model } from 'src/model/entities/model.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -11,8 +21,16 @@ export class User {
   user_avatar: string;
   @Column()
   user_role: string;
-  @Column()
+  @CreateDateColumn()
   create_time: string;
-  @Column()
+  @UpdateDateColumn()
   update_time: string;
+  // 与Model实体类的多对多关系
+  @ManyToMany(() => Model, (model) => model.users)
+  @JoinTable()
+  models: Model[];
+  // 用户与ModelConfig实体类的一对多关系
+  @ManyToMany(() => ModelConfig, (config) => config.user)
+  @JoinTable()
+  configs: ModelConfig[];
 }

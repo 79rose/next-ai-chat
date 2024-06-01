@@ -14,11 +14,13 @@ export class UsersService {
   ) {}
 
   create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create(createUserDto);
+    const user_role = createUserDto?.user_role ?? 'user';
+    const user = this.userRepository.create({ ...createUserDto, user_role });
     return this.userRepository.save(user);
   }
 
   findAll(paginationQuery: PaginationQueryDto) {
+    if (!paginationQuery) return this.userRepository.find();
     const { limit, offset } = paginationQuery;
     return this.userRepository.find({
       skip: offset,
@@ -39,13 +41,13 @@ export class UsersService {
     return user;
   }
 
-  async update(updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.preload({
-      id: +updateUserDto.id,
+      id: +id,
       ...updateUserDto,
     });
     if (!user) {
-      throw new NotFoundException(`User #${updateUserDto.id} not found`);
+      throw new NotFoundException(`User #${id} not found`);
     }
     return this.userRepository.save(user);
   }
