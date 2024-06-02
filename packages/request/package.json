@@ -1,0 +1,17 @@
+{
+  "name": "@next-chat/request",
+  "version": "1.0.0",
+  "description": "fetch mini axios",
+  "main": "./index.ts",
+  "scripts": {},
+  "keywords": [],
+  "author": "leewahjoel",
+  "license": "ISC",
+  "dependencies": {
+    "qs": "^6.12.1"
+  },
+  "devDependencies": {
+    "@types/qs": "^6.9.15",
+    "typescript": "^5.4.5"
+  }
+}
