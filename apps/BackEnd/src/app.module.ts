@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { CommonModule } from './common/common.module';
 import { ChatModule } from './chat/chat.module';
 import { UsersModule } from './user/user.module';
 import { ModelModule } from './model/model.module';
+import { AuthModule } from './auth/auth.module';
 import AppConfig from './config/app.config';
+
 @Module({
   imports: [
-    CoffeesModule,
     ConfigModule.forRoot({
       load: [AppConfig],
     }),
@@ -30,6 +30,7 @@ import AppConfig from './config/app.config';
     ChatModule,
     UsersModule,
     ModelModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
