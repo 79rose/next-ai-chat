@@ -16,19 +16,21 @@ export class UsersService {
   create(createUserDto: CreateUserDto) {
     const user_role = createUserDto?.user_role ?? 'user';
     const user = this.userRepository.create({ ...createUserDto, user_role });
-    return this.userRepository.save(user);
+    const data = this.userRepository.save(user);
+    return { data };
   }
 
   findAll(paginationQuery: PaginationQueryDto) {
     if (!paginationQuery) return this.userRepository.find();
     const { limit, offset } = paginationQuery;
-    return this.userRepository.find({
+    const data = this.userRepository.find({
       skip: offset,
       take: limit,
       order: {
         id: 'ASC',
       },
     });
+    return { data };
   }
 
   async findOne(id: number) {
@@ -38,7 +40,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`User #${id} not found`);
     }
-    return user;
+    return { data: user };
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
@@ -49,11 +51,14 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`User #${id} not found`);
     }
-    return this.userRepository.save(user);
+    // return this.userRepository.save(user);
+    const data = this.userRepository.save(user);
+    return { data };
   }
 
   async remove(id: number) {
-    const user = await this.findOne(id);
-    return this.userRepository.remove(user);
+    const { data: user } = await this.findOne(id);
+    const data = this.userRepository.remove(user);
+    return { data };
   }
 }

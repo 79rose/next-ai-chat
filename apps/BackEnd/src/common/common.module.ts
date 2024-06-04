@@ -20,8 +20,8 @@ import { LoggingMiddleware } from './middleware/logging/logging.middleware';
 export class CommonModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggingMiddleware).forRoutes({
-      path: 'coffees',
-      method: RequestMethod.GET,
+      path: '*',
+      method: RequestMethod.ALL,
     });
   }
 }

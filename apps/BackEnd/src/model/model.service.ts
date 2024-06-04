@@ -20,15 +20,17 @@ export class ModelService {
     return this.configRepository.save(config);
   }
   findAllModel() {
-    return this.modelRepository.find();
+    const data = this.modelRepository.find();
+    return { data };
   }
   findAll(paginationQuery: PaginationQueryDto) {
     if (!paginationQuery) return this.configRepository.find();
     const { limit, offset } = paginationQuery;
-    return this.configRepository.find({
+    const data = this.configRepository.find({
       skip: offset,
       take: limit,
     });
+    return { data };
   }
 
   async findOne(id: number) {
@@ -38,7 +40,7 @@ export class ModelService {
     if (!config) {
       throw new NotFoundException(`Config #${id} not found`);
     }
-    return config;
+    return { data: config };
   }
   async update(id: number, updateConfigDto: UpdateConfigDto) {
     const config = await this.configRepository.preload({
@@ -48,11 +50,12 @@ export class ModelService {
     if (!config) {
       throw new NotFoundException(`Config #${id} not found`);
     }
-    return this.configRepository.save(config);
+    const data = this.configRepository.save(config);
+    return { data };
   }
 
   async remove(id: number) {
-    const config = await this.findOne(id);
+    const { data: config } = await this.findOne(id);
     return this.configRepository.remove(config);
   }
 }
