@@ -1,10 +1,17 @@
 import { ArrowUpOutlined, AudioOutlined } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea';
 import { useState } from 'react';
-
 // chat input
-export default function Input() {
+interface InputProps {
+  onSend: (message: string) => void;
+}
+export default function Input({ onSend }: InputProps) {
   const [value, setValue] = useState('');
+  function send() {
+    if (!value) return;
+    onSend(value);
+    setValue('');
+  }
   return (
     <div
       className="flex w-[100vw] max-w-[800px] items-center justify-between gap-2 rounded-2xl 
@@ -39,11 +46,12 @@ export default function Input() {
         prefix="fakdk"
       />
       <div
-        className={`             flex  
-             h-9 w-9 cursor-pointer items-center justify-center self-end justify-self-end rounded-full
+        className={`             
+        flex h-9 w-9 cursor-pointer items-center justify-center self-end justify-self-end rounded-full
              bg-[#3333]  p-2 shadow-sm ${
                value ? 'bg-[white]/80 hover:shadow-md' : 'bg-[#3333]'
              } `}
+        onClick={send}
       >
         <ArrowUpOutlined
           style={{
