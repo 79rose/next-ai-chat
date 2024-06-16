@@ -1,11 +1,14 @@
 import { ModelConfig } from 'src/model/entities/model-config.entity';
 import { Model } from 'src/model/entities/model.entity';
+import { Session } from 'src/message/entities/sessions.entity';
+
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -30,7 +33,11 @@ export class User {
   @JoinTable()
   models: Model[];
   // 用户与ModelConfig实体类的一对多关系
-  @ManyToMany(() => ModelConfig, (config) => config.user)
+  @OneToMany(() => ModelConfig, (config) => config.user)
   @JoinTable()
   configs: ModelConfig[];
+
+  @OneToMany(() => Session, (session) => session.user, { cascade: true })
+  @JoinTable()
+  sessions: Session[];
 }

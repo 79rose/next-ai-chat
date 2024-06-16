@@ -8,6 +8,7 @@ import { ChatModule } from './chat/chat.module';
 import { UsersModule } from './user/user.module';
 import { ModelModule } from './model/model.module';
 import { AuthModule } from './auth/auth.module';
+import { MessageModule } from './message/message.module';
 import AppConfig from './config/app.config';
 
 @Module({
@@ -31,6 +32,7 @@ import AppConfig from './config/app.config';
     UsersModule,
     ModelModule,
     AuthModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

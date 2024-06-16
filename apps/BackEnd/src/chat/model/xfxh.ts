@@ -11,9 +11,6 @@ export function xfxh(qustion: string) {
     APIKey = 'cffe0bec210b446cb026abfee204c2e1',
   }
 
-  // 初始化问题值为空字符串
-  const questionValue = '';
-
   // 获取当前时间的 GMT 字符串
   //   const dateString = new Date().toGMTString();
   const dateString = new Date().toUTCString();
@@ -47,7 +44,6 @@ export function xfxh(qustion: string) {
   // 当连接打开时发送聊天请求
   sock.on('open', function () {
     console.log('讯飞星火连接sock连接成功!!!!');
-    // 使用 setTimeout 函数来添加延迟
     setTimeout(function () {
       sock.send(
         JSON.stringify({
@@ -75,7 +71,7 @@ export function xfxh(qustion: string) {
           },
         }),
       );
-    }, 1000); // 延迟 1 秒
+    }, 500);
   });
   return sock;
 }

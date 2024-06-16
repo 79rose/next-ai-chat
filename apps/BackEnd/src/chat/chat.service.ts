@@ -29,7 +29,7 @@ export class ChatService {
           questionValue += item.content;
           // 将文本消息发送给客户端
           console.log(item.content);
-          that.res.write(`data: ${item.content}\n\n`);
+          that.res.write(item.content);
         });
       }
     });

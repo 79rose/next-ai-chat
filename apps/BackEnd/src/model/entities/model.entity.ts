@@ -22,7 +22,7 @@ export class Model {
   @OneToMany(() => ModelConfig, (config) => config.model)
   @JoinTable()
   configs: ModelConfig[];
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, (user) => user.models)
   @JoinTable()
   users: User[];
 }
