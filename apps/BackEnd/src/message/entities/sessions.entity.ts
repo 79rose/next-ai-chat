@@ -24,7 +24,7 @@ export class Session {
   title: string;
 
   @Column()
-  userId: string;
+  userId: number;
 
   @CreateDateColumn()
   create_time: string;

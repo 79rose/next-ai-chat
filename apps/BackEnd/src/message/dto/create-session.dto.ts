@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsInt } from 'class-validator';
 
 export class CreateSessionDto {
   @ApiProperty({ description: 'The user id of a session.' })
-  @IsString()
+  @IsInt()
   @IsNotEmpty()
-  readonly userId: string;
+  readonly userId: number;
 }
