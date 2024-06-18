@@ -1,8 +1,12 @@
-import { DownOutlined, TwitchOutlined } from '@ant-design/icons';
+import useSlider from '@/hooks/useSlider';
+import {
+  AlignLeftOutlined,
+  DownOutlined,
+  TwitchOutlined,
+} from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown, Switch } from 'antd';
 import React from 'react';
-
 let focus = false;
 function onOpenChange(val: boolean) {
   focus = val;
@@ -44,19 +48,43 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const App: React.FC = () => (
-  <Dropdown menu={{ items }} trigger={['click']} onOpenChange={onOpenChange}>
-    <a
-      onClick={(e) => e.preventDefault()}
-      className={`
+const App: React.FC = () => {
+  const { onOpen } = useSlider();
+  const isOpen = useSlider((state) => state.isOpen);
+  return (
+    <>
+      <div
+        className="
+        flex items-center justify-between gap-1 px-1 py-2 font-semibold
+      "
+      >
+        {!isOpen && (
+          <AlignLeftOutlined
+            className=" scale-150 text-[#333b]"
+            onClick={onOpen}
+          />
+        )}
+        <Dropdown
+          menu={{ items }}
+          trigger={['click']}
+          onOpenChange={onOpenChange}
+        >
+          <a
+            onClick={(e) => e.preventDefault()}
+            className={`
                 "inline-flex text-[#7d7d7d]" items-center gap-1 rounded-md rounded-l-lg 
        px-2 py-2 font-[1000] hover:bg-[#fffe] ${focus ? 'bg-[#fffe]' : ''}
         `}
-    >
-      <span className="text-xl font-semibold text-[#7d7d7d]">NowChat </span>
-      <DownOutlined style={{ color: '#7d7d7d' }} />
-    </a>
-  </Dropdown>
-);
+          >
+            <span className="text-xl font-semibold text-[#7d7d7d]">
+              NowChat{' '}
+            </span>
+            <DownOutlined style={{ color: '#7d7d7d' }} />
+          </a>
+        </Dropdown>
+      </div>
+    </>
+  );
+};
 
 export default App;

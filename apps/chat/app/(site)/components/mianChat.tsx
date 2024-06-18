@@ -1,25 +1,38 @@
+'use client';
+
+import { Chat } from '@/api';
 import Input from '@/components/Input';
+import useChatStore from '@/hooks/useChat';
+import useUserStore from '@/hooks/useUser';
 import { Flex } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from './Card';
 import ChatContainer from './ChatContainer';
 import Icon from './Icon';
 import SelectOrigin from './selectOrigin';
 import SwitchOrigin from './switchOrigin';
 export default function MainChat({ className }: { className?: string }) {
-  const [isChat, setChat] = useState(false);
-  const [chatList, setChatList] = useState([] as any);
-
+  const isChat = useChatStore((state) => state.isChat);
+  const token = useUserStore((state) => state.token);
+  const sessionId = useChatStore((state) => state.currentSessionId);
+  const { setCurrentChatList } = useChatStore();
+  const currentChatList = useChatStore((state) => state.currentChatList);
+  const [chatList, setChatList] = useState(currentChatList);
   async function addChat(message: string) {
     setChatList((prevChatList: any) => [
       ...prevChatList,
-      { type: 'question', message },
+      { senderType: 'user', content: message },
     ]);
+    setCurrentChatList([...currentChatList, { type: 'question', message }]);
     const res = await fetch('http://localhost:3000/chat', {
       method: 'POST',
-      body: JSON.stringify({ propmt: message }),
+      body: JSON.stringify({
+        promt: message,
+        id: sessionId,
+      }),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!res.body) return;
@@ -29,26 +42,46 @@ export default function MainChat({ className }: { className?: string }) {
       var { value, done } = await reader.read();
       if (done) break;
       value = value?.replace('data', '');
-      console.log('received data -', value);
+      setChatList((prevChatList: any) => [
+        ...prevChatList.filter((_item, index) => {
+          return (
+            index !== prevChatList.length - 1 || _item.senderType === 'user'
+          );
+        }),
+        { senderType: 'bot', content: mes },
+      ]);
       mes += value;
-      // 将接收到的数据替换列表中的数据
-      setChatList([...chatList, { type: 'answer', message: mes }]);
     }
+    setCurrentChatList([
+      ...currentChatList,
+      { senderType: 'bot', content: mes },
+    ]);
   }
-
+  const fetchData = async () => {
+    try {
+      const { data } = await Chat.getMessageListBySessionId(+sessionId);
+      setCurrentChatList(data.list);
+      setChatList(data.list);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, [sessionId]);
   return (
     <Flex className={`${className} w-full px-2 pt-2`} vertical>
-      {isChat ? (
+      {chatList.length === 0 && !isChat ? (
         <>
           <div className="mb-8 mt-8 flex items-center justify-center">
             <SwitchOrigin />
           </div>
           <Icon />
           <div className="mt-8 flex flex-row flex-wrap justify-center gap-4 p-4  sm:pt-8 md:gap-8">
-            <Card />
-            <Card />
-            <Card className="hidden md:block" />
-            <Card className="hidden md:block" />
+            <Card content="介绍一下深圳技术大学" />
+            <Card content="帮我写一个贪吃蛇脚本" />
+            <Card className="hidden md:block" content="预测一下nba今年的冠军" />
+            <Card className="hidden md:block" content="介绍一下数据库系统" />
           </div>
         </>
       ) : (
@@ -62,9 +95,6 @@ export default function MainChat({ className }: { className?: string }) {
           "
           >
             <ChatContainer chatlist={chatList} />
-            {/* <FloatButton.Group shape="circle" style={{ right: 54, bottom: 87 }}>
-              <FloatButton.BackTop visibilityHeight={20} duration={2000} />
-            </FloatButton.Group> */}
           </div>
           <div className="absolute bottom-8 flex w-full flex-col items-center justify-center">
             <Input onSend={addChat} />
