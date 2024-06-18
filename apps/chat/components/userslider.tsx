@@ -1,16 +1,26 @@
+'use client';
 import useAuthModal from '@/hooks/useAuthModal';
+import useChatStore from '@/hooks/useChat';
 import useSettingModal from '@/hooks/useSettingModal';
 import useUserStore from '@/hooks/useUser';
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, MenuProps } from 'antd';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 export default function User() {
   const { isLogin, logout, setToken, userImg, userName } = useUserStore();
   const { onOpen } = useAuthModal();
   const { onOpen: settingOpen } = useSettingModal();
-
+  const { setCurrentChatList, setCurrentSessionList } = useChatStore();
+  const router = useRouter();
   const handleLogout = () => {
     logout();
     setToken('');
+    setCurrentChatList([]);
+    setCurrentSessionList([]);
+  };
+  const goToUserCenter = () => {
+    router.push('/user');
   };
   const items: MenuProps['items'] = [
     {
@@ -29,15 +39,30 @@ export default function User() {
       label: (
         <div
           className="flex items-center justify-start gap-2 font-semibold"
+          onClick={goToUserCenter}
+        >
+          <LogoutOutlined />
+          <span>个人中心</span>
+        </div>
+      ),
+      key: '1',
+    },
+    {
+      label: (
+        <div
+          className="flex items-center justify-start gap-2 font-semibold"
           onClick={handleLogout}
         >
           <LogoutOutlined />
           <span>logout</span>
         </div>
       ),
-      key: '1',
+      key: '2',
     },
   ];
+  useEffect(() => {
+    console.log(isLogin, userImg);
+  }, [isLogin, userImg]);
   return (
     <>
       <div
@@ -47,9 +72,11 @@ export default function User() {
         {isLogin ? (
           <>
             <Dropdown menu={{ items }} trigger={['click']}>
-              <Avatar size={40}>{userImg}</Avatar>
+              <Avatar size={40} src={userImg}></Avatar>
             </Dropdown>
-            <h1>{userName}</h1>
+            <h1 className="pt-[1px] text-[20px] font-semibold text-black">
+              {userName}
+            </h1>
           </>
         ) : (
           <div className="flex items-center gap-2">

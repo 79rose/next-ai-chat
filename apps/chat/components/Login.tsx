@@ -1,20 +1,53 @@
 'use client';
+import { Auth } from '@/api';
 import useAuthModal from '@/hooks/useAuthModal';
 import useUserStore from '@/hooks/useUser';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 const App: React.FC = () => {
   const { onClose } = useAuthModal();
   const { login, setToken } = useUserStore();
-  const onFinish = (values: any) => {
-    login('leewahjoel', 'leewahjoel');
-    setToken('Bear test');
-    onClose();
-    toast.success('登录成功');
-  };
 
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [type, setType] = useState('login');
+  const onFinish = async (_values: any) => {
+    try {
+      if (type === 'register') {
+        const { data } = await Auth.register({
+          name: userName,
+          password,
+        });
+
+        login(data.user_id, userName, data.user_avatar);
+        setToken(data.token);
+      } else {
+        const { data } = await Auth.login({
+          name: userName,
+          password,
+        });
+        console.log(data, 'data');
+        login(data.user_id, userName, data.user_avatar);
+        setToken(data.token);
+      }
+    } catch (error) {
+      console.log(error);
+      type === 'login' ? toast.error('登录失败') : toast.error('注册失败');
+      return;
+    }
+    onClose();
+
+    type === 'login' ? toast.success('登录成功') : toast.success('注册成功');
+  };
+  const toggleType = () => {
+    if (type === 'login') {
+      setType('register');
+    } else {
+      setType('login');
+    }
+  };
   return (
     <>
       <div
@@ -34,6 +67,8 @@ const App: React.FC = () => {
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Username"
+              onChange={(e) => setUserName(e.target.value)}
+              value={userName}
             />
           </Form.Item>
           <Form.Item
@@ -44,6 +79,8 @@ const App: React.FC = () => {
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
             />
           </Form.Item>
           {/* <Form.Item>
@@ -58,8 +95,11 @@ const App: React.FC = () => {
               block
               className="login-form-button"
             >
-              Log in
+              {type === 'login' ? 'log in' : ' log up'}
             </Button>
+            <div className="ml-auto mt-2 text-right " onClick={toggleType}>
+              Or <a>{type === 'login' ? '注册' : '登录'}</a>
+            </div>
           </Form.Item>
         </Form>
       </div>
