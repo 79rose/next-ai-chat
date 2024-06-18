@@ -10,5 +10,6 @@ import { User } from 'src/user/entities/user.entity';
   imports: [TypeOrmModule.forFeature([Message, Session, User])],
   controllers: [chatController],
   providers: [MessageService, SessionService],
+  exports: [MessageService, SessionService],
 })
 export class MessageModule {}

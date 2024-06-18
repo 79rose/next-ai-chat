@@ -1,10 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { xfxh } from './model/xfxh';
 import { Response } from 'express';
+import { Repository } from 'typeorm';
+import { Message } from 'src/message/entities/message.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+
 @Injectable()
 export class ChatService {
+  constructor(
+    @InjectRepository(Message)
+    private readonly messageRepository: Repository<Message>,
+  ) {}
   private res: Response;
-  async chat(promt: string) {
+  async chat(body: any) {
+    const id = body.id;
+    const promt = body.promt;
     const sock = xfxh(promt);
     let questionValue = '';
     // 监听连接的错误事件
@@ -35,11 +45,30 @@ export class ChatService {
     });
 
     // 监听连接关闭事件，将结果通过 resolve 返回
-    sock.on('close', () => {
+    sock.on('close', async () => {
+      // 将回调函数改为异步
       console.log('讯飞星火连接sock关闭!!!!');
-      // 返回问题值
-      this.res.end();
-      return Promise.resolve(questionValue);
+
+      try {
+        const Usermessage = this.messageRepository.create({
+          content: promt,
+          sessionId: id,
+          senderType: 'user',
+          messageType: 'text',
+        });
+        await this.messageRepository.save(Usermessage); // 使用 await 等待保存操作完成
+        const Botmessage = this.messageRepository.create({
+          content: questionValue,
+          sessionId: id,
+          senderType: 'bot',
+          messageType: 'text',
+        });
+        await this.messageRepository.save(Botmessage); // 使用 await 等待保存操作完成
+        this.res.end();
+      } catch (error) {
+        console.log('error:', error);
+        this.res.write('error');
+      }
     });
   }
 

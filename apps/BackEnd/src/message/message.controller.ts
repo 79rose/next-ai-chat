@@ -12,7 +12,6 @@ import { MessageService } from './message.service';
 import { SessionService } from './session.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
-import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
 import { ApiTags } from '@nestjs/swagger';
 @ApiTags('session')
@@ -24,8 +23,8 @@ export class chatController {
   ) {}
 
   @Post()
-  create(@Body() createSessionDto: CreateSessionDto) {
-    return this.sessionService.create(createSessionDto);
+  create(@Body('userId') userId: number) {
+    return this.sessionService.create(userId);
   }
   @Get()
   findAll(@Query('userId') userId?: string) {

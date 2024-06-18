@@ -1,4 +1,3 @@
-import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,10 +15,10 @@ export class SessionService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-  async create(createSessionDto: CreateSessionDto) {
-    const user = await this.loadUserById(+createSessionDto.userId);
+  async create(userId: number) {
+    const user = await this.loadUserById(userId);
     const session = this.sessionRepository.create({
-      ...createSessionDto,
+      userId,
       user: user,
       title: '新的聊天',
     });
@@ -31,7 +30,12 @@ export class SessionService {
     if (!!userId) {
       return {
         data: {
-          list: await this.sessionRepository.find({ where: { userId } }),
+          list: await this.sessionRepository.find({
+            where: { userId: +userId },
+            order: {
+              update_time: 'ASC',
+            },
+          }),
         },
       };
     }
@@ -72,14 +76,11 @@ export class SessionService {
     const session = await this.sessionRepository.findOne({
       where: { id },
     });
-    const user = await this.userRepository.findOne({
-      where: { id: +session.userId },
-    });
+
     if (!session) {
       throw new NotFoundException(`Session #${id} not found`);
     }
-    user.sessions = user.sessions.filter((item) => item.id !== id);
-    await this.userRepository.save(user);
+
     return {
       data: await this.sessionRepository.remove(session),
     };
