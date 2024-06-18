@@ -37,8 +37,18 @@ export class AuthService {
       user_avatar: USER_AVATAR,
       user_role,
     });
+    // 同时返回token
     const data = await this.userRepository.save(user);
-    return { data };
+    const token = await this.generateTokens(data);
+    return {
+      data: {
+        token: token.token,
+        user_name: data.user_name,
+        user_avatar: data.user_avatar,
+        user_role: data.user_role,
+        user_id: data.id,
+      },
+    };
   }
 
   //登录
@@ -54,7 +64,13 @@ export class AuthService {
     if (!isEqual) throw new UnauthorizedException('Password is incorrect');
     const data = await this.generateTokens(user);
     return {
-      data,
+      data: {
+        token: data.token,
+        user_name: user.user_name,
+        user_avatar: user.user_avatar,
+        user_role: user.user_role,
+        user_id: user.id,
+      },
     };
   }
   async generateTokens(user: User) {
